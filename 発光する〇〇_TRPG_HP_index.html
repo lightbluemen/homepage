@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>発光する〇〇 | TRPGシナリオサークル</title>
+  <meta name="description" content="発光する〇〇 – CoC6・エモクロアなどを中心にシナリオを書くTRPGサークル。シナリオ公開・注意事項・お知らせ。">
+  <meta name="theme-color" content="#0a1628">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a1628;
+      --bg-card: #111e33;
+      --bg-card-hover: #162640;
+      --accent: #00e5ff;
+      --accent-soft: #00b8d4;
+      --accent-glow: rgba(0, 229, 255, 0.35);
+      --text: #e8f4ff;
+      --text-muted: #8ba3b8;
+      --border: rgba(0, 229, 255, 0.18);
+      --radius: 12px;
+      --font-main: "Noto Sans JP", "Zen Kaku Gothic New", sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== Background glow ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(0, 180, 255, 0.12), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 120, 200, 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ===== Header / Nav ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.1rem;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 4rem;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: var(--accent-soft);
+      margin-bottom: 1.2rem;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #fff 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #021018;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: #33ebff;
+      box-shadow: 0 0 28px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ===== Sections ===== */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--accent-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    /* ===== News ===== */
+    .news-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .news-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.2rem;
+      padding: 1rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      align-items: baseline;
+    }
+
+    .news-date {
+      font-size: 0.85rem;
+      color: var(--accent-soft);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .news-tag {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .news-text {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    /* ===== Works (Scenario cards) ===== */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .work-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+
+    .work-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .work-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .work-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .meta-badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+
+    .meta-badge.system {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent);
+    }
+
+    .work-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .work-note {
+      font-size: 0.82rem;
+      color: #a8c4d8;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent-soft);
+    }
+
+    .work-links {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+    }
+
+    .work-links a {
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .work-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== About ===== */
+    .about-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+    }
+
+    .about-box p + p {
+      margin-top: 1rem;
+    }
+
+    .about-box a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .about-box a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== Guidelines ===== */
+    .guidelines {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .guide-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+    }
+
+    .guide-item h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .guide-item p,
+    .guide-item ul {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .guide-item ul {
+      padding-left: 1.2rem;
+      margin-top: 0.4rem;
+    }
+
+    .guide-item li + li {
+      margin-top: 0.25rem;
+    }
+
+    /* ===== Contact ===== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.3rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(0, 229, 255, 0.45);
+    }
+
+    .contact-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .contact-card a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+
+    .contact-card a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    /* ===== Utility ===== */
+    .empty-note {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 2rem;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+    }
+
+    /* ===== Mobile nav toggle (simple) ===== */
+    @media (max-width: 720px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding-top: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header>
+    <div class="nav-inner">
+      <a href="#top" class="logo">
+        <span class="logo-dot"></span>
+        発光する〇〇
+      </a>
+      <nav>
+        <a href="#news">お知らせ</a>
+        <a href="#works">シナリオ</a>
+        <a href="#about">About</a>
+        <a href="#guidelines">注意事項</a>
+        <a href="#contact">連絡先</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="top">
+    <div class="hero-label">TRPG SCENARIO CIRCLE</div>
+    <h1>発光する〇〇</h1>
+    <p>
+      CoC6｜エモクロア｜などを回りながら、<br>
+      シナリオを書いています。
+    </p>
+    <div class="hero-actions">
+      <a href="#works" class="btn btn-primary">シナリオを見る</a>
+      <a href="https://talto.cc/users/l3BuMm0gXYgCDnAeM2LlWdxxfNa2" class="btn btn-outline" target="_blank" rel="noopener">TALTOで公開中 ↗</a>
+    </div>
+  </section>
+
+  <!-- ========== NEWS ========== -->
+  <!--
+    【更新方法】
+    .news-item をコピーして上に追加してください。
+    日付は YYYY.MM.DD 形式がおすすめです。
+  -->
+  <section id="news">
+    <div class="section-header">
+      <div class="section-label">01 NEWS</div>
+      <h2>お知らせ</h2>
+      <p>日々の告知はXでも発信しています。</p>
+    </div>
+
+    <ul class="news-list">
+      <!-- ▼ ここに新しいお知らせを追加 ▼ -->
+      <li class="news-item">
+        <span class="news-date">2026.08.14</span>
+        <span class="news-tag">Info</span>
+        <span class="news-text">ホームページを公開しました。</span>
+      </li>
+
+      <li class="news-item">
+        <span class="news-date">2026.08</span>
+        <span class="news-tag">予定</span>
+        <span class="news-text">『CoC6 その日その日の花を摘め』 8月末公開予定</span>
+      </li>
+
+      <li class="news-item">
+        <span class="news-date">2026.09</span>
+        <span class="news-tag">予定</span>
+        <span class="news-text">『CoC6 STARSシリーズ 星の慟哭』 9月末公開予定</span>
+      </li>
+      <!-- ▲ お知らせここまで ▲ -->
+    </ul>
+  </section>
+
+  <!-- ========== WORKS ========== -->
+  <!--
+    【更新方法】
+    .work-card をコピーして中身を書き換えるだけです。
+    バッジは好きなだけ追加・削除できます。
+    詳細ページやTALTOへのリンクも自由に入れてください。
+  -->
+  <section id="works">
+    <div class="section-header">
+      <div class="section-label">02 WORKS</div>
+      <h2>シナリオ一覧</h2>
+      <p>公開中・準備中のシナリオです。詳細・データは各リンク先からどうぞ。</p>
+    </div>
+
+    <div class="works-grid">
+
+      <!-- ▼ シナリオカード例1（公開中の場合） ▼ -->
+      <article class="work-card">
+        <h3>メイド服で滝行しないと終わらない</h3>
+        <div class="work-meta">
+          <span class="meta-badge system">クトゥルフ神話TRPG</span>
+          <span class="meta-badge">公開中</span>
+        </div>
+        <p class="work-desc">
+          <!-- ここに短いあらすじや雰囲気を書いてください -->
+          シナリオの短い説明文をここに書きます。雰囲気や推奨人数・時間など。
+        </p>
+        <div class="work-note">
+          <!-- KP向け注意やセンシティブ要素など -->
+          ※ネタバレ注意 / 推奨人数・時間などはTALTOページ参照
+        </div>
+        <div class="work-links">
+          <a href="https://talto.cc/users/l3BuMm0gXYgCDnAeM2LlWdxxfNa2" target="_blank" rel="noopener">TALTOで見る ↗</a>
+        </div>
+      </article>
+
+      <!-- ▼ シナリオカード例2（準備中） ▼ -->
+      <article class="work-card">
+        <h3>その日その日の花を摘め</h3>
+        <div class="work-meta">
+          <span class="meta-badge system">クトゥルフ神話TRPG</span>
+          <span class="meta-badge">8月末予定</span>
+        </div>
+        <p class="work-desc">
+          公開準備中です。詳細は公開時に更新します。
+        </p>
+        <div class="work-note">
+          準備中のため詳細は後日掲載予定
+        </div>
+      </article>
+
+      <article class="work-card">
+        <h3>星の慟哭(せいのどうこく)</h3>
+        <div class="work-meta">
+          <span class="meta-badge system">クトゥルフ神話TRPG</span>
+          <span class="meta-badge">9月末予定</span>
+        </div>
+        <p class="work-desc">
+          公開準備中です。詳細は公開時に更新します。
+        </p>
+        <div class="work-note">
+          準備中のため詳細は後日掲載予定
+        </div>
+      </article>
+
+      <!-- 新しいシナリオは上のカードをコピーして追加してください -->
+
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section id="about">
+    <div class="section-header">
+      <div class="section-label">03 ABOUT</div>
+      <h2>このサークルについて</h2>
+    </div>
+
+    <div class="about-box">
+      <p>
+        <strong>発光する〇〇</strong>（発光するすんすん）は、TRPGに毒されたデザイナーが運営するシナリオサークルです。
+      </p>
+      <p>
+        CoC6・エモクロアなどを中心に回りながら、シナリオを書いています。<br>
+        FFさん優先で回させていただいていますので、ご了承ください。
+      </p>
+      <p>
+        DMやリプで誘っていただければお返事しますので、お気軽にどうぞ！
+      </p>
+      <p>
+        シナリオは <a href="https://talto.cc/users/l3BuMm0gXYgCDnAeM2LlWdxxfNa2" target="_blank" rel="noopener">TALTO</a> で公開しています。<br>
+        日常の発信は <a href="https://x.com/light_BlueMEN" target="_blank" rel="noopener">X (@light_BlueMEN)</a> で。
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== GUIDELINES ========== -->
+  <section id="guidelines">
+    <div class="section-header">
+      <div class="section-label">04 GUIDELINES</div>
+      <h2>シナリオ使用における注意事項</h2>
+      <p>遊ぶ・配信・二次創作する際のお願いです。</p>
+    </div>
+
+    <div class="guidelines">
+      <div class="guide-item">
+        <h3>✦ ネタバレについて</h3>
+        <p>
+          ネタバレ行為は固くお断りしております。<br>
+          SNSに投稿する際はふせったー等を利用し、ワンクッション入れるようにお願いします。<br>
+          動画投稿などをされる際にも、はじめにネタバレが含まれることを注意書きとして動画上に表示してください。
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h3>✦ 著作権・利用範囲</h3>
+        <ul>
+          <li>当サークルのシナリオおよび付属データの著作権・知的財産権はすべて当サークルに帰属します。</li>
+          <li>個人または法人格を持たない団体による利用を想定しています。</li>
+          <li>無料で公開される媒体でのみ利用可能とします。</li>
+          <li>投げ銭（スーパーチャット／ステッカー）や広告収益は問題ありません。</li>
+          <li>メンバーシップや限定会員など金銭が発生する限定媒体での利用は、一言お声掛けください。</li>
+        </ul>
+      </div>
+
+      <div class="guide-item">
+        <h3>✦ 二次創作・FA・卓報告</h3>
+        <p>
+          FAや二次創作は大歓迎です！ 卓報告なども続々とお待ちしています。<br>
+          シナリオやデザイン等を利用する際、また二次創作やFAを投稿する際は、X等のリプ欄で私をメンションしていただけるととても嬉しいです。
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h3>✦ お問い合わせ</h3>
+        <p>
+          シナリオに関する質問は随時受け付けております。<br>
+          DM、またはメール（lightbluemen.info@gmail.com）までお気軽にどうぞ。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact">
+    <div class="section-header">
+      <div class="section-label">05 CONTACT</div>
+      <h2>連絡先・リンク</h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>X (Twitter)</h3>
+        <a href="https://x.com/light_BlueMEN" target="_blank" rel="noopener">@light_BlueMEN</a>
+        <p>日常・告知・募集など</p>
+      </div>
+
+      <div class="contact-card">
+        <h3>TALTO</h3>
+        <a href="https://talto.cc/users/l3BuMm0gXYgCDnAeM2LlWdxxfNa2" target="_blank" rel="noopener">シナリオ公開ページ</a>
+        <p>シナリオはこちらで公開</p>
+      </div>
+
+      <div class="contact-card">
+        <h3>lit.link</h3>
+        <a href="https://lit.link/light_BlueMEN" target="_blank" rel="noopener">プロフィールまとめ</a>
+        <p>各種リンク集</p>
+      </div>
+
+      <div class="contact-card">
+        <h3>メール</h3>
+        <a href="mailto:lightbluemen.info@gmail.com">lightbluemen.info@gmail.com</a>
+        <p>お問い合わせ用</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <p>© 発光する〇〇 / 発光するすんすん</p>
+    <p style="margin-top:0.4rem;">
+      <a href="https://x.com/light_BlueMEN" target="_blank" rel="noopener">X</a> ・
+      <a href="https://talto.cc/users/l3BuMm0gXYgCDnAeM2LlWdxxfNa2" target="_blank" rel="noopener">TALTO</a> ・
+      <a href="https://lit.link/light_BlueMEN" target="_blank" rel="noopener">lit.link</a>
+    </p>
+  </footer>
+
+</body>
+</html>
