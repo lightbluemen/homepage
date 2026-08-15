@@ -320,6 +320,11 @@
       color: var(--accent);
     }
 
+    .meta-badge.kp {
+      background: rgba(255, 180, 50, 0.15);
+      color: #ffc14d;
+    }
+
     .work-desc {
       font-size: 0.9rem;
       color: var(--text-muted);
@@ -349,6 +354,100 @@
 
     .work-links a:hover {
       text-decoration: underline;
+    }
+
+    /* ===== Played scenarios (通過済み) ===== */
+    .played-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .played-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .played-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(0, 229, 255, 0.35);
+    }
+
+    .played-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.45rem;
+    }
+
+    .played-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .played-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== Upcoming with explorer images ===== */
+    .upcoming-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .upcoming-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .upcoming-card:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .upcoming-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #0d1a2c;
+      display: block;
+    }
+
+    .upcoming-img-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(145deg, #0d1a2c, #132338);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .upcoming-body {
+      padding: 1.1rem 1.2rem 1.3rem;
+    }
+
+    .upcoming-body h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .upcoming-body p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
     }
 
     /* ===== About ===== */
@@ -466,17 +565,7 @@
       text-decoration: none;
     }
 
-    /* ===== Utility ===== */
-    .empty-note {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 2rem;
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      font-size: 0.95rem;
-    }
-
-    /* ===== Mobile nav toggle (simple) ===== */
+    /* ===== Mobile ===== */
     @media (max-width: 720px) {
       .nav-inner {
         flex-direction: column;
@@ -506,6 +595,8 @@
       <nav>
         <a href="#news">お知らせ</a>
         <a href="#works">シナリオ</a>
+        <a href="#played">通過済み</a>
+        <a href="#upcoming">通過予定</a>
         <a href="#about">About</a>
         <a href="#guidelines">注意事項</a>
         <a href="#contact">連絡先</a>
@@ -528,11 +619,6 @@
   </section>
 
   <!-- ========== NEWS ========== -->
-  <!--
-    【更新方法】
-    .news-item をコピーして上に追加してください。
-    日付は YYYY.MM.DD 形式がおすすめです。
-  -->
   <section id="news">
     <div class="section-header">
       <div class="section-label">01 NEWS</div>
@@ -541,45 +627,33 @@
     </div>
 
     <ul class="news-list">
-      <!-- ▼ ここに新しいお知らせを追加 ▼ -->
       <li class="news-item">
         <span class="news-date">2026.08.14</span>
         <span class="news-tag">Info</span>
         <span class="news-text">ホームページを公開しました。</span>
       </li>
-
       <li class="news-item">
         <span class="news-date">2026.08</span>
         <span class="news-tag">予定</span>
-        <span class="news-text">『CoC6 その日その日の花を摘め』 8月末公開予定</span>
+        <span class="news-text">『その日その日の花を摘め』 8月末公開予定</span>
       </li>
-
       <li class="news-item">
         <span class="news-date">2026.09</span>
         <span class="news-tag">予定</span>
-        <span class="news-text">『CoC6 STARSシリーズ 星の慟哭』 9月末公開予定</span>
+        <span class="news-text">『星の慟哭（ほしのどうこく）』 9月末公開予定</span>
       </li>
-      <!-- ▲ お知らせここまで ▲ -->
     </ul>
   </section>
 
-  <!-- ========== WORKS ========== -->
-  <!--
-    【更新方法】
-    .work-card をコピーして中身を書き換えるだけです。
-    バッジは好きなだけ追加・削除できます。
-    詳細ページやTALTOへのリンクも自由に入れてください。
-  -->
+  <!-- ========== WORKS（自作シナリオ） ========== -->
   <section id="works">
     <div class="section-header">
       <div class="section-label">02 WORKS</div>
-      <h2>シナリオ一覧</h2>
+      <h2>自作シナリオ</h2>
       <p>公開中・準備中のシナリオです。詳細・データは各リンク先からどうぞ。</p>
     </div>
 
     <div class="works-grid">
-
-      <!-- ▼ シナリオカード例1（公開中の場合） ▼ -->
       <article class="work-card">
         <h3>メイド服で滝行しないと終わらない</h3>
         <div class="work-meta">
@@ -587,12 +661,9 @@
           <span class="meta-badge">公開中</span>
         </div>
         <p class="work-desc">
-          <!-- ここに短いあらすじや雰囲気を書いてください -->
-          ───今宵、恥を捨て１着のメイド服を押し付けあえ
-          自陣のPCにメイド服を着せたいKPや自陣の他PCにメイド服を着せたいPLさんにぜひ
+          ───今宵、恥を捨てメイド服を押し付けあえ  自陣のPCにメイド服を着せたいKPや自陣の他PCにメイド服を着せたいPLさんにぜひ
         </p>
         <div class="work-note">
-          <!-- KP向け注意やセンシティブ要素など -->
           ※ネタバレ注意 / 推奨人数・時間などはTALTOページ参照
         </div>
         <div class="work-links">
@@ -600,36 +671,251 @@
         </div>
       </article>
 
-      <!-- ▼ シナリオカード例2（準備中） ▼ -->
       <article class="work-card">
         <h3>その日その日の花を摘め</h3>
         <div class="work-meta">
           <span class="meta-badge system">クトゥルフ神話TRPG</span>
           <span class="meta-badge">8月末予定</span>
         </div>
-        <p class="work-desc">
-          公開準備中です。詳細は公開時に更新します。
-        </p>
-        <div class="work-note">
-          準備中のため詳細は後日掲載予定
-        </div>
+        <p class="work-desc">✿─── 僕らは死なないんだ───✿  高校生活最後の一年を迎える前の春休みを過ごしている ＿＿＿あなた達には ”わからなくなったこと” がある。今月末頒布予定</p>
+        <div class="work-note">準備中のため詳細は後日掲載予定</div>
       </article>
 
       <article class="work-card">
-        <h3>星の慟哭(せいのどうこく)</h3>
+        <h3>星の慟哭（ほしのどうこく）</h3>
         <div class="work-meta">
           <span class="meta-badge system">クトゥルフ神話TRPG</span>
           <span class="meta-badge">9月末予定</span>
         </div>
-        <p class="work-desc">
-          公開準備中です。詳細は公開時に更新します。
-        </p>
-        <div class="work-note">
-          準備中のため詳細は後日掲載予定
+        <p class="work-desc">公開準備中です。詳細は公開時に更新します。</p>
+        <div class="work-note">準備中のため詳細は後日掲載予定</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== 通過済みシナリオ ========== -->
+  <!--
+    【更新方法】
+    .played-card をコピーして追加してください。
+    KP経験があるものは meta-badge kp を付けています。
+  -->
+  <section id="played">
+    <div class="section-header">
+      <div class="section-label">03 PLAYED</div>
+      <h2>通過済みシナリオ</h2>
+      <p>KPとして回せるものには「KP」バッジを付けています。お気軽にお誘いください。</p>
+    </div>
+
+    <div class="played-grid">
+
+      <div class="played-card">
+        <h3>ロッカー</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>毒入りスープ</h3>
+        <div class="played-meta">
+          <span class="meta-badge">通過済み</span>
+        </div>
+        <p class="played-note">探索者として通過</p>
+      </div>
+
+      <div class="played-card">
+        <h3>沼男は誰だ</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>狂気山脈</h3>
+        <div class="played-meta">
+          <span class="meta-badge">通過済み</span>
+        </div>
+        <p class="played-note">探索者として通過</p>
+      </div>
+
+      <div class="played-card">
+        <h3>旧タキハバラ</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>Goodmorning of ALL</h3>
+        <div class="played-meta">
+          <span class="meta-badge">通過済み</span>
+        </div>
+        <p class="played-note">探索者として通過</p>
+      </div>
+
+      <div class="played-card">
+        <h3>平日昼間のアクアリウム</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KP経験あり</p>
+      </div>
+
+      <div class="played-card">
+        <h3>電気代がバカ高い！</h3>
+        <div class="played-meta">
+          <span class="meta-badge">通過済み</span>
+        </div>
+        <p class="played-note">探索者として通過 / KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>トンネルから出ると死ぬ</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>ドブ老人</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>知らない老人</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>キルキルイキル</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+      <div class="played-card">
+        <h3>灼熱は必要ない</h3>
+        <div class="played-meta">
+          <span class="meta-badge">通過済み</span>
+        </div>
+        <p class="played-note">探索者として通過</p>
+      </div>
+
+      <div class="played-card">
+        <h3>青春18R.I.P.</h3>
+        <div class="played-meta">
+          <span class="meta-badge kp">KP経験あり</span>
+        </div>
+        <p class="played-note">KPとして回せます</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== 通過予定シナリオ（探索者画像付き） ========== -->
+  <!--
+    【画像の入れ方】
+    1. 探索者画像を用意する（正方形推奨）
+    2. GitHubリポジトリに画像をアップロード（例: images/ フォルダ）
+    3. 下の img タグの src を書き換える
+       例: src="images/tanjou.png"
+    今はプレースホルダー（画像なしの枠）になっています。
+  -->
+  <section id="upcoming">
+    <div class="section-header">
+      <div class="section-label">04 UPCOMING</div>
+      <h2>通過予定シナリオ</h2>
+      <p>これから回る予定のシナリオです。探索者画像と一緒に掲載しています。</p>
+    </div>
+
+    <div class="upcoming-grid">
+
+      <!-- 同じ空には昇れない -->
+      <article class="upcoming-card">
+        <!-- 画像がある場合は下のコメントを外して src を設定 -->
+        <img class="upcoming-img" src="images/onaji-sora.png" alt="同じ空には昇れない 探索者"> 
+        <div class="upcoming-img-placeholder">
+          探索者画像<br>（準備中）
+        </div>
+        <div class="upcoming-body">
+          <div class="work-meta" style="margin-bottom:0.5rem;">
+            <span class="meta-badge">8月末予定</span>
+          </div>
+          <h3>同じ空には昇れない</h3>
+          <p>通過予定。詳細は決まり次第更新します。</p>
         </div>
       </article>
 
-      <!-- 新しいシナリオは上のカードをコピーして追加してください -->
+      <!-- TheaterLimelight -->
+      <article class="upcoming-card">
+        <!-- <img class="upcoming-img" src="images/theater.png" alt="TheaterLimelight 探索者"> -->
+        <div class="upcoming-img-placeholder">
+          探索者画像<br>（準備中）
+        </div>
+        <div class="upcoming-body">
+          <div class="work-meta" style="margin-bottom:0.5rem;">
+            <span class="meta-badge">9月末予定</span>
+          </div>
+          <h3>TheaterLimelight</h3>
+          <p>通過予定。詳細は決まり次第更新します。</p>
+        </div>
+      </article>
+
+      <!-- ■■■■が消えた夏 -->
+      <article class="upcoming-card">
+        <!-- <img class="upcoming-img" src="images/natsu.png" alt="■■■■が消えた夏 探索者"> -->
+        <div class="upcoming-img-placeholder">
+          探索者画像<br>（準備中）
+        </div>
+        <div class="upcoming-body">
+          <div class="work-meta" style="margin-bottom:0.5rem;">
+            <span class="meta-badge">未定</span>
+          </div>
+          <h3>■■■■が消えた夏</h3>
+          <p>通過予定。詳細は決まり次第更新します。</p>
+        </div>
+      </article>
+
+       <!-- 異能警察は英雄じゃない -->
+      <article class="upcoming-card">
+        <!-- <img class="upcoming-img" src="images/natsu.png" alt="■■■■が消えた夏 探索者"> -->
+        <div class="upcoming-img-placeholder">
+          探索者画像<br>（準備中）
+        </div>
+        <div class="upcoming-body">
+          <div class="work-meta" style="margin-bottom:0.5rem;">
+            <span class="meta-badge">未定</span>
+          </div>
+          <h3>異能警察は英雄じゃない</h3>
+          <p>通過予定。詳細は決まり次第更新します。</p>
+        </div>
+      </article>
+
+      <!-- レゾンデートル -->
+      <article class="upcoming-card">
+        <!-- <img class="upcoming-img" src="images/raison.png" alt="レゾンデートル 探索者"> -->
+        <div class="upcoming-img-placeholder">
+          探索者画像<br>（準備中）
+        </div>
+        <div class="upcoming-body">
+          <div class="work-meta" style="margin-bottom:0.5rem;">
+            <span class="meta-badge">10月予定</span>
+          </div>
+          <h3>レゾンデートル</h3>
+          <p>通過予定。詳細は決まり次第更新します。</p>
+        </div>
+      </article>
 
     </div>
   </section>
@@ -637,7 +923,7 @@
   <!-- ========== ABOUT ========== -->
   <section id="about">
     <div class="section-header">
-      <div class="section-label">03 ABOUT</div>
+      <div class="section-label">05 ABOUT</div>
       <h2>このサークルについて</h2>
     </div>
 
@@ -662,7 +948,7 @@
   <!-- ========== GUIDELINES ========== -->
   <section id="guidelines">
     <div class="section-header">
-      <div class="section-label">04 GUIDELINES</div>
+      <div class="section-label">06 GUIDELINES</div>
       <h2>シナリオ使用における注意事項</h2>
       <p>遊ぶ・配信・二次創作する際のお願いです。</p>
     </div>
@@ -709,7 +995,7 @@
   <!-- ========== CONTACT ========== -->
   <section id="contact">
     <div class="section-header">
-      <div class="section-label">05 CONTACT</div>
+      <div class="section-label">07 CONTACT</div>
       <h2>連絡先・リンク</h2>
     </div>
 
